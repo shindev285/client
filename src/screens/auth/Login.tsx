@@ -3,17 +3,25 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import SocialLogin from "./components/SocialLogin";
 import avatar from "../../assets/images/avatar.png";
+import { log } from "console";
+import handleAPI from "../../apis/handleAPI";
 const { Title, Paragraph, Text } = Typography;
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRemember, setIsRemember] = useState(false);
   const [form] = Form.useForm();
-  const handleLogin = (values: { email: string; password: string }) => {
+  const handleLogin = async (values: { email: string; password: string }) => {
     console.log(values);
+    try {
+      const res = await handleAPI("/auth/register", values, "post");
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <>
-      <Card style={{ width: '' }}>
+      <Card style={{ width: "70%" }}>
         <div className="text-center">
           <img
             src={avatar}
@@ -72,7 +80,7 @@ const Login = () => {
               checked={isRemember}
               onChange={(val) => setIsRemember(val.target.checked)}
             >
-              Remember me for 30 days
+              Remember me
             </Checkbox>
           </div>
           <div className="col text-end">
@@ -83,7 +91,7 @@ const Login = () => {
           <Button
             onClick={() => form.submit()}
             type="primary"
-            style={{ width: "100%"}}
+            style={{ width: "100%" }}
             size="large"
           >
             login
