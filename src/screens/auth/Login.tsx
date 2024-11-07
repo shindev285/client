@@ -11,9 +11,9 @@ const Login = () => {
   const [isRemember, setIsRemember] = useState(false);
   const [form] = Form.useForm();
   const handleLogin = async (values: { email: string; password: string }) => {
-    console.log(values);
+    const api = `/auth/register`;
     try {
-      const res = await handleAPI("/auth/register", values, "post");
+      const res = await handleAPI(api, values, "post");
       console.log(res);
     } catch (error) {
       console.log(error);

@@ -1,16 +1,43 @@
-import { Button, Card, Checkbox, Form, Input, Space, Typography } from "antd";
+import {
+  Button,
+  Card,
+  Checkbox,
+  Form,
+  Input,
+  message,
+  Space,
+  Typography,
+} from "antd";
 import SocialLogin from "./components/SocialLogin";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import avatar from "../../assets/images/avatar.png";
+import handleAPI from "../../apis/handleAPI";
 const { Title, Paragraph, Text } = Typography;
 
 const SignUp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRemember, setIsRemember] = useState(false);
   const [form] = Form.useForm();
-  const handleLogin = (values: { email: string; password: string }) => {
+  const handleLogin = async (values: { email: string; password: string }) => {
     console.log(values);
+    const api = `/auth/register`;
+    setIsLoading(true);
+    try {
+      const res = await handleAPI(api, values, "post");
+      console.log(res);
+    } catch (error: any) {
+      console.log(error);
+      const errorMessage =
+        error.response && error.response.data && error.response.data.message
+          ? error.response.data.message
+          : "404";
+
+      // Hiển thị thông báo lỗi
+      message.error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
   };
   return (
     <>
@@ -56,7 +83,22 @@ const SignUp = () => {
           <Form.Item
             label="Password"
             name="password"
-            rules={[{ required: true, message: "Please input your Password" }]}
+            rules={[
+              {
+                required: true,
+                message: "Please input your Password",
+              },
+              () => ({
+                validator(_, value) {
+                  if (!value || value.length >= 6) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error("Password must be at least 6 characters")
+                  );
+                },
+              }),
+            ]}
           >
             <Input.Password
               placeholder="Create your password"
@@ -66,11 +108,12 @@ const SignUp = () => {
           </Form.Item>
         </Form>
 
-        <div className="mt-4 mb-3">
+        <div className="mt-5 mb-3">
           <Button
+            loading={isLoading}
             onClick={() => form.submit()}
             type="primary"
-            style={{ width: "100%"}}
+            style={{ width: "100%" }}
             size="large"
           >
             Get started
