@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import SocialLogin from "./components/SocialLogin";
 import avatar from "../../assets/images/avatar.png";
-import { log } from "console";
 import handleAPI from "../../apis/handleAPI";
 const { Title, Paragraph, Text } = Typography;
 const Login = () => {

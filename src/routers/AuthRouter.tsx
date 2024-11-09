@@ -10,7 +10,7 @@ const AuthRouter = () => {
       <div className="container">
         <div className="row">
           <div className="col d-none d-lg-block text-center" style={
-            {marginTop:'25%'}
+            {marginTop:'15%'}
           }>
             <div className="md-4 ">
               <img
