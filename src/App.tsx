@@ -1,7 +1,9 @@
-import React from "react";
+
 import "./App.css";
-import Router from "./routers/Router";
+import Routers from "./routers/Routers";
 import { ConfigProvider } from "antd";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 function App() {
   return (
@@ -15,12 +17,12 @@ function App() {
             colorLink: "#F04438",
             borderRadius: 2,
           },
-          components: {
-            // Thêm các cấu hình khác cho component ở đây nếu cần
-          },
+          components: {},
         }}
       >
-        <Router />
+        <Provider store={store}>
+          <Routers />
+        </Provider>
       </ConfigProvider>
     </>
   );

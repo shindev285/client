@@ -25,7 +25,7 @@ const SignUp = () => {
     setIsLoading(true);
     try {
       const res = await handleAPI(api, values, "post");
-      console.log(res);
+      console.log(res.data);
     } catch (error: any) {
       console.log(error);
       const errorMessage =
