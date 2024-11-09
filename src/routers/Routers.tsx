@@ -1,4 +1,4 @@
-import React from 'react';
+
 import AuthRouter from './AuthRouter';
 import MainRouter from './MainRouter';
 import { authSelector, AuthState } from '../redux/reducers/authReducer';
