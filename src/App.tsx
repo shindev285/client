@@ -11,9 +11,6 @@ function App() {
       <ConfigProvider
         theme={{
           token: {
-            // colorTextHeading: "#F04438",
-            // colorTextLabel: '#000000',
-            // colorPrimary:'#F15E2B',
             colorLink: "#F04438",
             borderRadius: 2,
           },

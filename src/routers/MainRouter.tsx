@@ -1,10 +1,10 @@
-
+import HomeScreen from "../screens/HomeScreen";
 
 const MainRouter = () => {
   return (
-    <div>
-      <h1>MainRouter</h1>
-    </div>
+    <>
+      <HomeScreen />
+    </>
   );
 };
 

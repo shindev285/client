@@ -1,45 +1,99 @@
+// import { createSlice } from "@reduxjs/toolkit";
+// import { localDataNames } from "../../constants/appInfor";
 
-import { createSlice } from "@reduxjs/toolkit";
+// export interface AuthState {
+//   token: string;
+//   _id: string;
+//   name: string;
+//   rule: number;
+// }
+
+// const initialState: AuthState = {
+//   token: "",
+//   _id: "",
+//   name: "",
+//   rule: 0,
+// };
+
+// const authSlice = createSlice({
+//   name: "auth",
+//   initialState: {
+//     data: initialState,
+//   },
+
+//   reducers: {
+//     addAuth: (state, action) => {
+//       state.data = action.payload;
+//       syncLocal(action.payload);
+//     },
+//     removeAuth: (state, _action) => {
+//       state.data = initialState; // Đưa về trạng thái ban đầu
+//       clearLocal(); // Xóa dữ liệu trong localStorage
+//     },
+//   },
+// });
+
+// export const authReducer = authSlice.reducer;
+// export const { addAuth, removeAuth } = authSlice.actions;
+// export const authSelector = (state: any) => state.authReducer.data;
+
+// // Hàm đồng bộ dữ liệu vào localStorage
+// const syncLocal = (data: any) => {
+//   localStorage.setItem(
+//     localDataNames.authData, // Thay bằng tên hợp lệ của khóa
+//     JSON.stringify(data)
+//   );
+// };
+
+// // Hàm xóa dữ liệu trong localStorage khi logout
+// const clearLocal = () => {
+//   localStorage.removeItem(localDataNames.authData);
+// };
+
+/** @format */
+
+import { createSlice } from '@reduxjs/toolkit';
+import { localDataNames } from '../../constants/appInfor';
 
 export interface AuthState {
-  token: string; 
-  _id: string;   
-  name: string;  
-  rule: number;  
+	token: string;
+	_id: string;
+	name: string;
+	rule: number;
 }
 
-// Khởi tạo giá trị ban đầu của AuthState 
-const initialState: AuthState = {
-  token: "",
-  _id: "",
-  name: "",
-  rule: 0,
+const initialState = {
+	token: '',
+	_id: '',
+	name: '',
+	rule: 0,
 };
 
-// Tạo một slice tên là "auth" để quản lý trạng thái xác thực của người dùng
 const authSlice = createSlice({
-  name: "auth", 
-  
-  // Đặt trạng thái ban đầu cho slice 
-  initialState: {
-    data: initialState,
-  },
-
-  // Định nghĩa các reducers cho slice để thay đổi trạng thái dựa trên các hành động (actions)
-  reducers: {
-    // Tạo reducer addAuth để cập nhật dữ liệu xác thực
-    addAuth: (state, action) => {
-      // Cập nhật toàn bộ state.data bằng giá trị payload từ action
-      state.data = action.payload;
-    },
-  },
+	name: 'auth',
+	initialState: {
+		data: initialState,
+	},
+	reducers: {
+		addAuth: (state, action) => {
+			state.data = action.payload;
+			syncLocal(action.payload);
+		},
+		removeAuth: (state, _action) => {
+			state.data = initialState;
+			syncLocal({});
+		},
+		refreshtoken: (state, action) => {
+			state.data.token = action.payload;
+		},
+	},
 });
 
-
 export const authReducer = authSlice.reducer;
+export const { addAuth, removeAuth, refreshtoken } = authSlice.actions;
 
-// Xuất hành động (action) addAuth để các component khác có thể dispatch hành động này
-export const { addAuth } = authSlice.actions;
+export const authSeletor = (state: any) => state.authReducer.data;
 
-// Selector này nhận state của toàn bộ store và truy cập state.authReducer.data
-export const authSelector = (state: any) => state.authReducer.data;
+const syncLocal = (data: any) => {
+	localStorage.setItem(localDataNames.authData, JSON.stringify(data));
+};
