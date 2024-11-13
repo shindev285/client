@@ -1,21 +1,48 @@
-import { Button, Card, Checkbox, Form, Input, Space, Typography } from "antd";
+import {
+  Button,
+  Card,
+  Checkbox,
+  Form,
+  Input,
+  message,
+  Space,
+  Typography,
+} from "antd";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import SocialLogin from "./components/SocialLogin";
 import avatar from "../../assets/images/avatar.png";
 import handleAPI from "../../apis/handleAPI";
+import { useDispatch } from "react-redux";
+import { addAuth } from "../../redux/reducers/authReducer";
+import { localDataNames } from "../../constants/appInfor";
+
 const { Title, Paragraph, Text } = Typography;
+
 const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRemember, setIsRemember] = useState(false);
   const [form] = Form.useForm();
+
+  const dispatch = useDispatch();
+
   const handleLogin = async (values: { email: string; password: string }) => {
-    const api = `/auth/register`;
+    const api = `/auth/login`;
+    setIsLoading(true);
     try {
-      const res = await handleAPI(api, values, "post");
-      console.log(res);
-    } catch (error) {
-      console.log(error);
+      const res: any = await handleAPI(api, values, "post");
+
+      message.success(res.message);
+      res.data && dispatch(addAuth(res.data));
+
+      if (isRemember) {
+        localStorage.setItem(localDataNames.authData, JSON.stringify(res.data));
+      }
+    } catch (error: any) {
+      message.error(error.message);
+      console.log(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -88,6 +115,7 @@ const Login = () => {
         </div>
         <div className="mt-4 mb-3">
           <Button
+            loading={isLoading}
             onClick={() => form.submit()}
             type="primary"
             style={{ width: "100%" }}

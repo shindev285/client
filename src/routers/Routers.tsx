@@ -22,7 +22,7 @@ const Routers = () => {
     const res = localStorage.getItem(localDataNames.authData);
     res && dispatch(addAuth(JSON.parse(res)));
   };
-  console.log("Dữ liệu auth từ Redux :", auth);
+  // console.log("Dữ liệu auth từ Redux :", auth);
   return isloading ? <Spin /> : !auth.token ? <AuthRouter /> : <MainRouter />;
 };
 

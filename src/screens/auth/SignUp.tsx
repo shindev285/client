@@ -22,30 +22,25 @@ const { Title, Paragraph, Text } = Typography;
 const SignUp = () => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const dispatch = useDispatch();
   const [form] = Form.useForm();
+  
+  const dispatch = useDispatch();
   const handleLogin = async (values: { email: string; password: string }) => {
     console.log(values);
 
     const api = `/auth/register`;
     setIsLoading(true);
     try {
-      const res = await handleAPI(api, values, "post");
+      const res: any = await handleAPI(api, values, "post");
       if (res.data) {
         // luu vao localStorage
         // localStorage.setItem(localDataNames.authData, JSON.stringify(res.data));
-        message.success("Sign up successfully",res.data.message);
+        message.success("Đăng Nhập Thành Công");
         dispatch(addAuth(res.data));
       }
     } catch (error: any) {
       console.log(error);
-      const errorMessage =
-        error.response && error.response.data && error.response.data.message
-          ? error.response.data.message
-          : "404";
-
-      // Hiển thị thông báo lỗi
-      message.error(errorMessage);
+      message.error(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -60,7 +55,14 @@ const SignUp = () => {
             style={{ width: 100, height: 100 }}
             className="mb-3"
           />
-          <Title level={2}>Create an account</Title>
+          <Title
+            level={2}
+            style={{
+              color: "#F04438",
+            }}
+          >
+            Create an account
+          </Title>
           <Paragraph type="secondary">Start your 30-day free trial.</Paragraph>
         </div>
         {/* form  */}
